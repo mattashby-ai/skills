@@ -1,0 +1,69 @@
+{
+  "skills": [
+    {
+      "name": "consulting",
+      "path": ".skills/consulting/consulting-index.json",
+      "description": "Customer-facing skills for requirements gathering, solution design, cost modelling, and technical/commercial reviews.",
+      "skills": [
+        { "name": "customer-meeting", "description": "Processing meeting transcriptions and supplied context to produce structured outputs for solution design and cost modelling." },
+        { "name": "define-requirements", "description": "Clarifying and documenting a problem statement before solution design begins." },
+        { "name": "discovery-workshop", "description": "Planning and facilitating a structured workshop to surface requirements, constraints, priorities, and success criteria from customer stakeholders." },
+        { "name": "hlse", "description": "Producing a high-level solution estimate of effort and cost based on known requirements." },
+        { "name": "pattern-maker", "description": "Identifying and documenting reusable solution patterns for a given problem or technology area." },
+        { "name": "process-map", "description": "Mapping and documenting a business or technical process in structured visual form." },
+        { "name": "high-level-design", "description": "Creating a high-level design document for a proposed solution." },
+        { "name": "detailed-design", "description": "Creating a detailed technical design document with component-level specifications." },
+        { "name": "sounding-board", "description": "Critically reviewing and providing structured feedback on an idea, approach, or decision." },
+        { "name": "technical-review", "description": "Reviewing a technical solution, design, or architecture for quality, risk, and alignment." },
+        { "name": "cost-modelling", "description": "Building a cost model for a proposed solution including licensing, infrastructure, and services." },
+        { "name": "commercial-review", "description": "Reviewing commercial terms, pricing, or contractual content for risk and alignment." },
+        { "name": "sow-quality-check", "description": "Quality checking a Statement of Work for completeness, clarity, and commercial soundness." },
+        { "name": "translation", "description": "Translating technical content into clear language for a non-technical or executive audience." },
+        { "name": "research", "description": "Researching a topic, technology, vendor, or market to produce a structured summary." }
+      ]
+    },
+    {
+      "name": "engineering",
+      "path": ".skills/engineering/engineering-index.json",
+      "description": "Project delivery skills for planning, risk management, dependency tracking, change requests, and status updates.",
+      "skills": [
+        { "name": "project-planner", "description": "Creating a structured project plan with tasks, owners, milestones, and timelines." },
+        { "name": "project-meetings", "description": "Facilitating or documenting project meetings including actions and decisions." },
+        { "name": "risk-planner", "description": "Identifying, assessing, and documenting project risks with mitigation actions." },
+        { "name": "status-update", "description": "Generating a project status update or report for stakeholders." },
+        { "name": "change-request", "description": "Drafting or processing a formal change request including scope, effort, and impact." },
+        { "name": "dependency-mapper", "description": "Identifying and documenting dependencies between workstreams, teams, or deliverables." },
+        { "name": "success-criteria", "description": "Defining measurable success criteria for a project or workstream." },
+        { "name": "project-closure", "description": "Managing project closure including lessons learned, sign-off, and handover documentation." },
+        { "name": "msgraph", "description": "Working with Microsoft Graph API to query or interact with Microsoft 365 data." }
+      ]
+    },
+    {
+      "name": "manager",
+      "path": ".skills/manager/manager-index.json",
+      "description": "Management skills for coaching, resource planning, financial forecasting, communications, and client success.",
+      "skills": [
+        { "name": "customer-researcher", "description": "Researching and profiling a customer organisation to support engagement preparation." },
+        { "name": "ps-coach", "description": "Coaching a professional services team member on delivery, skills, or career development." },
+        { "name": "financial-forecast", "description": "Building or updating a financial forecast for a practice, project, or period." },
+        { "name": "communicator", "description": "Drafting internal or external communications including updates, announcements, or escalations." },
+        { "name": "resource-planner", "description": "Planning team resource allocation across projects and time periods." },
+        { "name": "product-creator", "description": "Defining and documenting a new managed service or product offering." },
+        { "name": "client-success", "description": "Managing client success activities including health checks, reviews, and escalation handling." },
+        { "name": "practice-governance", "description": "Applying governance processes for practice-level reporting, compliance, or quality management." }
+      ]
+    },
+    {
+      "name": "sales",
+      "path": ".skills/sales/sales-index.json",
+      "description": "Pre-sales skills for qualifying opportunities, responding to tenders, writing proposals, growing accounts, and engaging partner programmes.",
+      "skills": [
+        { "name": "opportunity-qualification", "description": "Qualifying a sales opportunity against fit, budget, timeline, and strategic criteria." },
+        { "name": "rfp-response", "description": "Responding to a formal Request for Proposal or tender document." },
+        { "name": "proposal", "description": "Writing a sales proposal or commercial offer for a prospective customer." },
+        { "name": "account-planning", "description": "Planning growth, relationships, and opportunity pipeline for an existing account." },
+        { "name": "partner-engagement", "description": "Engaging with a technology partner programme including co-sell, MDF, or incentive activities." }
+      ]
+    }
+  ]
+}
