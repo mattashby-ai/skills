@@ -8,15 +8,15 @@ Reference for the account-planning skill. Use these criteria to classify account
 
 | Tier | Annual Revenue | Planning Depth | Review Cadence | Account Manager Time |
 |------|---------------|---------------|---------------|---------------------|
-| Strategic | >$500k NZD/yr | Full account plan | Monthly | High — dedicated focus |
-| Growth | $100k–$500k/yr | Focused plan (whitespace + stakeholders) | Quarterly | Medium |
-| Maintain | <$100k/yr | Health check only | Half-yearly | Low — reactive |
+| Platinum | >$500k NZD/yr | Full account plan | Monthly | High — dedicated focus |
+| Gold | $100k–$500k/yr | Focused plan (whitespace + stakeholders) | Quarterly | Medium |
+| Silver | <$100k/yr | Health check only | Half-yearly | Low — reactive |
 
 ---
 
 ## Tier Criteria in Detail
 
-### Strategic Tier
+### Platinum Tier
 
 **Revenue threshold:** >$500,000 NZD per year (recognised, not contracted)
 
@@ -38,7 +38,7 @@ Reference for the account-planning skill. Use these criteria to classify account
 
 ---
 
-### Growth Tier
+### Gold Tier
 
 **Revenue threshold:** $100,000–$500,000 NZD per year
 
@@ -56,7 +56,7 @@ Reference for the account-planning skill. Use these criteria to classify account
 
 ---
 
-### Maintain Tier
+### Silver Tier
 
 **Revenue threshold:** <$100,000 NZD per year
 
@@ -98,7 +98,7 @@ Accounts should be reviewed for tier movement at the start of each planning cycl
 
 ## Account Planning Calendar
 
-| Activity | Strategic | Growth | Maintain |
+| Activity | Platinum | Gold | Silver |
 |---------|-----------|--------|---------|
 | Full account plan refresh | Annual (Oct–Dec) | Annual (Oct–Dec) | Not required |
 | Internal account review | Monthly | Quarterly | Half-yearly |
