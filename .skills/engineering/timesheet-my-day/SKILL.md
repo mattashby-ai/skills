@@ -14,7 +14,7 @@ description: >-
   attribute their working time to tickets or projects.
 metadata:
   author: The Instillery
-  version: "1.1.0"
+  version: "1.2.0"
 ---
 
 # Timesheet: My Day
@@ -286,7 +286,7 @@ or umbrella tickets — time rarely goes there. So:
 Output a single table in the person's local timezone. Use **exactly** these columns:
 
 ```
-| # | Start–Finish | Hrs | What you did | Suggested Halo ticket |
+| # | Start–Finish | Hrs | What you did | Sources | Suggested Halo ticket |
 ```
 
 - **What you did** — write this so the person can **paste it straight into the Halo time
@@ -300,6 +300,11 @@ Output a single table in the person's local timezone. Use **exactly** these colu
     restrictions; captured actions and next steps."
   - Good: "Drafted the Phase 3 Statement of Work and reviewed third-party requirements."
   - Avoid: "Edited the H12 scope doc and joined the Teams call" — names tools, not outcomes.
+- **Sources** — a concise list of the evidence this row was built from, so the person can
+  verify it. This column **is** where the sources belong (they stay out of "What you did").
+  Name the source type and the item, e.g. `Calendar: H12 design review 09:00–11:00`,
+  `Drive: Phase 3 SoW`, `Gmail: sent 12:39`, `Confluence: breakglass FIDO2 page`. Keep each to
+  a few words and list only the one or two strongest signals, not everything.
 - **Suggested Halo ticket** — hyperlink the ID and put the **ticket name beside it**:
   `[<id>](<link>) – <ticket name>`, with the ID as the visible link text (use the `link`
   field the Halo tools return; never paste the raw URL). **If more than one ticket is a
