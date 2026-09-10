@@ -14,7 +14,7 @@ description: >-
   attribute their working time to tickets or projects.
 metadata:
   author: The Instillery
-  version: "1.2.0"
+  version: "1.3.0"
 ---
 
 # Timesheet: My Day
@@ -83,10 +83,10 @@ over (evening), treat it as essentially complete, not partial.
 
 ## Step 2 — Connector check
 
-The expected sources are **Calendar, Email, Files/Docs, Chat (Slack), Wiki (Confluence via
-Atlassian Rovo), and HaloPSA (PSA/ticketing)**. Detect them up front — it changes what you
-can produce, and the person may want to connect something first (finding out afterwards
-that "most of my work is in Slack" wastes the run).
+The expected sources are **Calendar, Email, Files/Docs, Chat (Slack and/or Microsoft
+Teams), Wiki (Confluence via Atlassian Rovo), and HaloPSA (PSA/ticketing)**. Detect them up
+front — it changes what you can produce, and the person may want to connect something first
+(finding out afterwards that "most of my work is in chat" wastes the run).
 
 Tool schemas may be deferred — discover them with `ToolSearch`. Server IDs are opaque,
 per-environment hashes, so **identify connectors by capability, not a hardcoded ID**.
@@ -94,8 +94,13 @@ per-environment hashes, so **identify connectors by capability, not a hardcoded 
 the exact connector name to cite when one is missing, and how to tell connected from
 needs-authorisation from not-connected.
 
-One detection rule that's easy to get wrong:
+Two rules that are easy to get wrong:
 
+- **Google Workspace is the system of record for email, calendar, and files.** Always source
+  those three from Google (Gmail, Google Calendar, Google Drive), **never from a Microsoft
+  365 / Graph connector even if one is connected** — pulling them from both double-counts.
+  Use the M365 connector **only for Microsoft Teams chat**; ignore its Outlook mail/calendar
+  and SharePoint/OneDrive search.
 - **HaloPSA must be the PRODUCTION instance.** A dev/sandbox Halo is useless for logging
   real time. Inspect the instance — ticket links, `get_user_info`, any returned URL — for
   markers like `dev-`, `sandbox`, `test`, or `uat` in the hostname (e.g.
@@ -139,7 +144,9 @@ For the scoped period, pull from every **connected** source. Typical signals:
   Note that calendar-invite accept/decline emails are low-value noise.
 - **Files/Docs** — documents created / edited / viewed, with modified-by-me timestamps.
   Often the strongest signal for heads-down work that has no meeting.
-- **Chat (Slack)** — messages/threads the person sent.
+- **Chat (Slack and/or Microsoft Teams)** — messages the person sent. Pull Teams chats from
+  the M365 connector; **do not** pull Outlook mail/calendar or SharePoint from M365 —
+  email, calendar and files come from Google (system of record).
 - **Wiki (Confluence, via Atlassian Rovo)** — Confluence pages the person **created,
   updated, or viewed** in the period. A page they *created or edited* is a strong
   heads-down signal (query by `creator`/`contributor = currentUser()`); a page they only
@@ -231,20 +238,22 @@ Rules that make the output trustworthy and match how people actually book time:
     every agent's booked hours per weekday, is small and **not truncated**, and includes the
     person — use it to get **how many hours they've already logged for the target day**. This
     is the dependable check; do it first.
-  - **Per-ticket split (best-effort):** a **Technician Time Logged report** (`Who` /
-    `Ticket Number` / `Time Taken`) gives the per-ticket breakdown, but it's a large org-wide
-    **newest-first** dump that truncates after a few days — so the person can be absent from
-    the readable slice even when their daily total is clearly non-zero. Parse the file and
-    filter to `Who` = the person; if they're not in it, you have the total but not the split.
+  - **Per-ticket + hours (best-effort):** a **technician times report** carrying `who`,
+    `faultid` (ticket), `dateoccured` (entry date) and `TimeTaken` (hours) is the per-ticket
+    source. Parse the file and match `who` = the person, `dateoccured` = the target day, and
+    `faultid` = the row's ticket to read **hours already logged against that ticket that day**.
+    It's a large org-wide dump that truncates, so the person's entries are **often not in the
+    readable slice** — when they're absent you have the daily total but not the per-ticket
+    split; **never fabricate per-row figures.**
 
   Then:
-  - If the daily total shows they've **already logged most/all of the day**, say so plainly
-    (Step 7) and treat the reconstruction as a **cross-check / gap-fill**, not a fresh set of
-    entries to add. Don't re-propose a full day of logging over the top of it.
-  - Mark a row **`✓ already logged`** only when you actually matched its entry in the
-    per-ticket report. If you have only the daily total, don't guess per-row — surface the
-    logged total under the table and leave rows unmarked.
-  - **Top-up** — where a ticket shows some time but less than the activity, note the shortfall.
+  - **Per row (Step 7 ticket column):** where you can read a matching entry, append the hours
+    — `✓ <n>h logged` when it covers the activity, `⚠️ <n>h logged` when it's short of it.
+    Where per-ticket time isn't readable, leave the row unmarked (the footer still gives the
+    day's total).
+  - If the daily total shows **most/all of the day is already booked**, treat the run as a
+    **cross-check / gap-fill**, not a fresh set of entries — don't re-propose a full day over
+    the top of it.
 
 ### Get the ticket ID right, not just the category
 
@@ -283,7 +292,10 @@ or umbrella tickets — time rarely goes there. So:
 
 ## Step 7 — Build the timesheet table (the deliverable)
 
-Output a single table in the person's local timezone. Use **exactly** these columns:
+Render the table **inline in the chat response as a Markdown table — never write it to a
+separate file or artifact**. Output **only** the table and the short totals footer below it:
+no preamble, no trailing commentary, summaries, advice, or next-steps. Use the person's local
+timezone and **exactly** these columns:
 
 ```
 | # | Start–Finish | Hrs | What you did | Sources | Suggested Halo ticket |
@@ -311,12 +323,15 @@ Output a single table in the person's local timezone. Use **exactly** these colu
   plausible home, list them stacked** — best guess first, each on its own line, each
   hyperlinked with its name — so the person can pick the right one. Use `Internal Meeting` for
   non-billable time. If nothing fits, put **`⚠️ no suitable ticket`** plus a 2–4 word category
-  hint. Append **`✓ already logged`** only when you verified the entry is already booked.
+  hint. **Already-logged indicator (per Step 6):** where you can read time already booked
+  against the ticket for that day, append the hours — `✓ <n>h logged` (covers the activity) or
+  `⚠️ <n>h logged` (short of it). Omit it when per-ticket time isn't readable — the footer
+  still reports the day's total logged hours.
 - Escape or remove any `|` characters inside cell text (e.g. a ticket named
   "Power Performer | Awards") so they don't break the table columns.
 
-Below the table, keep it to just the totals — **no "areas to check", per-row recap, gaps,
-or advice sections:**
+Immediately below the table, output **only** these totals — then stop (nothing else, no
+commentary before or after):
 - **Total reconstructed hours ≈ X** (for `⚠️ top up` rows count only the shortfall).
 - **Already logged in Halo: Z h** for this day (from the daily-utilisation check), so about
   **X − Z** still to add or verify. Omit this line only if no logged figure could be read.

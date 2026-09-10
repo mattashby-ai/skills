@@ -20,7 +20,7 @@ connector directory when a source is missing, and what to pass to `suggest_conne
 | **Calendar** | Meetings attended | `list_events`, `list_calendars`, `search_events` | **Google Calendar** |
 | **Email** | Messages the person sent | `search_threads`, `get_thread`, `list_messages` | **Gmail** |
 | **Files / Docs** | Docs created / edited / viewed | `list_recent_files`, `search_files`, `read_file_content`, `get_file_metadata` | **Google Drive** |
-| **Chat** | Messages/threads sent | `search_messages`, `conversations_history`, `list_channels` | **Slack** |
+| **Chat** | Messages the person sent | Slack: `search_messages`/`conversations_history`; Teams (M365): `teams_list_chats`/`teams_list_channel_messages` | **Slack** and/or **Microsoft Teams** |
 | **Wiki** | Confluence pages viewed / edited / created (also Jira issues) | `getConfluencePage`, `getPagesInConfluenceSpace`, `searchConfluenceUsingCql`, `atlassianUserInfo`, `getAccessibleAtlassianResources`, plus a generic `search` / `fetch` | **Atlassian Rovo** (Confluence + Jira) |
 | **PSA / ticketing** | Assigned tickets + time logging | `get_assigned_tickets`, `get_one_ticket`, `search_tickets`, `get_user_info`, `log_time` | **HaloPSA** (production) |
 
@@ -101,6 +101,11 @@ keywords + any embedded ticket number in the page title).
   browsing-history data connector: browser-*automation* tools (Playwright, Claude-in-Chrome,
   etc.) can drive a page but can't read local history, and scraping `chrome://history` is
   unreliable and privacy-invasive. Don't add it back or send the user hunting for one.
+- **Google Workspace is the system of record; M365 is chat-only.** Source email, calendar
+  and files from Google (Gmail / Google Calendar / Google Drive) even when a Microsoft 365 /
+  Graph connector is present — using both double-counts. From M365 use **only Teams chat**
+  (`teams_list_chats`, `teams_list_channel_messages`); ignore its Outlook mail/calendar and
+  SharePoint/OneDrive search.
 - **PSA is the pivot.** If the PSA/ticketing connector is missing, unauthorised, or only
   dev, you can still assemble an activity log, but you cannot map to (or log against) real
   tickets — say this clearly and early.
